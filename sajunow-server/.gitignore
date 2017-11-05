@@ -20,6 +20,7 @@ hs_err_pid*
 .classpath
 .springBeans
 *.iml
+.DS_Store
 
 # Created by .ignore support plugin (hsz.mobi)
 /RemoteSystemsTempFiles/
