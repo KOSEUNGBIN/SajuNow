@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="defaultStatementTimeout" value="5000" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.landvibe.core.post.Post" alias="Post" />
+		<typeAlias type="com.landvibe.core.user.User" alias="User" />
+		<typeAlias type="com.landvibe.core.promotion.Promotion" alias="Promotion" />
+		<typeAlias type="com.landvibe.core.company.Company" alias="Company" />
+		<typeAlias type="com.landvibe.core.category.Category" alias="Category" />
+		<typeAlias type="com.landvibe.core.companytocategory.CompanyToCategory" alias="CompanyToCategory" />
+		<typeAlias type="com.landvibe.core.userquestion.UserQuestion" alias="UserQuestion" />
+		<typeAlias type="com.landvibe.core.companyquestion.CompanyQuestion" alias="CompanyQuestion" />
+		<typeAlias type="com.landvibe.core.userfaq.UserFaq" alias="UserFaq" />
+		<typeAlias type="com.landvibe.core.companyfaq.CompanyFaq" alias="CompanyFaq" />
+		<typeAlias type="com.landvibe.core.companytoreport.CompanyToReport" alias="CompanyToReport" />
+		<typeAlias type="com.landvibe.core.userfavorite.UserFavorite" alias="UserFavorite" />
+		<typeAlias type="com.landvibe.core.friend.Friend" alias="Friend" />
+		<typeAlias type="com.landvibe.core.history.History" alias="History" />
+		<typeAlias type="com.landvibe.core.schedule.Schedule" alias="Schedule" />
+		<typeAlias type="com.landvibe.core.chatmessage.ChatMessage" alias="ChatMessage" />
+		<typeAlias type="com.landvibe.core.report.Report" alias="Report" />
+		<typeAlias type="com.landvibe.core.pay.Payment" alias="Payment" />
+		<typeAlias type="com.landvibe.core.exchange.Exchange" alias="Exchange" />
+	</typeAliases>
+
+	<typeHandlers>
+	</typeHandlers>
+
+	<mappers>
+		<mapper resource="datasource/mappers/postMapper.xml" />
+		<mapper resource="datasource/mappers/userMapper.xml" />
+		<mapper resource="datasource/mappers/promotionMapper.xml" />
+		<mapper resource="datasource/mappers/companyMapper.xml" />
+		<mapper resource="datasource/mappers/categoryMapper.xml" />
+		<mapper resource="datasource/mappers/companytocategoryMapper.xml" />
+		<mapper resource="datasource/mappers/companyToReportMapper.xml" />
+		<mapper resource="datasource/mappers/userQuestionMapper.xml" />
+		<mapper resource="datasource/mappers/companyQuestionMapper.xml" />
+		<mapper resource="datasource/mappers/userFaqMapper.xml" />
+		<mapper resource="datasource/mappers/companyFaqMapper.xml" />
+		<mapper resource="datasource/mappers/friendMapper.xml" />
+		<mapper resource="datasource/mappers/historyMapper.xml" />
+		<mapper resource="datasource/mappers/scheduleMapper.xml" />
+		<mapper resource="datasource/mappers/chatMessageMapper.xml" />
+		<mapper resource="datasource/mappers/userFavoriteMapper.xml" />
+		<mapper resource="datasource/mappers/reportMapper.xml" />
+		<mapper resource="datasource/mappers/paymentMapper.xml" />
+		<mapper resource="datasource/mappers/exchangeMapper.xml" />
+	</mappers>
+</configuration>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.report.ReportDao">
+	
+	
+	
+		<insert id="insert" parameterType="Report">
+		INSERT INTO 
+			ft_report(
+				score,
+				comment,
+				register_date,
+				user_nickname
+			)
+			VALUES (
+				#{score},
+				#{comment},
+				NOW(),
+				#{user_nickname}
+			)
+			<selectKey resultType="long" order="AFTER" keyProperty="report_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		
+	</insert>	
+	
+	<select id="selectKey" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	
+	
+</mapper>

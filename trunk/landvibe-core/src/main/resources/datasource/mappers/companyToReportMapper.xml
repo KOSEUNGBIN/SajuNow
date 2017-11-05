@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.companytoreport.CompanyToReportDao">
+	
+	<resultMap type="CompanyToReport" id="companyResultMap">
+			<result property="report_no" column="report_no" />
+			<result property="company_no" column="company_no" />
+			<result property="score" column="score" />
+			<result property="comment" column="comment" />
+			<result property="register_date" column="register_date" />
+			<result property="user_nickname" column="user_nickname" />
+			
+	</resultMap>
+	
+	<resultMap type="CompanyToReport" id="ReportRankCountMap">
+		<result property="count" column="count" />
+		<result property="nick_name" column="nick_name" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="CompanyToReport">
+		INSERT INTO 
+			ft_company_report(
+				company_id,
+				report_id
+			)
+			VALUES (
+			#{company_no},
+			#{report_no}
+			)
+	</insert>
+	
+	<select id="selectReportRank" resultMap="ReportRankCountMap">
+		SELECT COUNT( * ) AS count, nick_name
+		FROM ft_company_report
+		INNER JOIN ft_company ON ft_company_report.company_id =
+		ft_company.company_no
+		GROUP BY company_no
+		ORDER BY count DESC
+		LIMIT 0 , 5
+	</select>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		DELETE
+		FROM
+			ft_report
+		<where>
+			report_no IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.value}
+        </foreach>
+		</where>	
+	</delete>
+
+
+</mapper>

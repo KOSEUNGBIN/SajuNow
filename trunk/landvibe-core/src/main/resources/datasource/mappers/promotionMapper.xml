@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.promotion.PromotionDao">
+	
+	<resultMap type="Promotion" id="promotionResultMap">
+		<id property="promotion_no" column="promotion_no" />
+		<result property="company_no" column="company_no" />
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+	</resultMap>
+	
+	<sql id="promotionColumns">
+		promotion_no,
+		company_no,
+		start_date,
+		end_date
+	</sql>
+	
+	<insert id="insert" parameterType="Promotion">
+		INSERT INTO 
+			ft_promotion(
+				company_no,
+				start_date,
+				end_date
+			)
+			VALUES (
+				#{companyNo},
+				#{startDate},
+				#{endDate}
+			)
+		<selectKey resultType="long" order="AFTER" keyProperty="promotion_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="selectByNo" resultMap="promotionResultMap" parameterType="long">
+		SELECT
+			<include refid="promotionColumns" />
+		FROM 
+			ft_promotion
+		WHERE 
+			promotion_no = #{promotion_no}
+	</select>
+
+	<delete id="deleteByPomotionNo" parameterType="long">
+		DELETE
+		FROM 
+			ft_promotion
+		WHERE 
+			promotion_no = #{promotion_no}
+	</delete>
+	
+	<delete id="deleteByCompanyNo" parameterType="long">
+		DELETE
+		FROM 
+			ft_promotion
+		WHERE 
+			company_no = #{company_no}
+	</delete>
+
+	<update id="update" parameterType="Promotion">
+		UPDATE 
+			ft_promotion
+		SET
+			start_date = #{start_date},
+			end_date = #{end_date}
+		WHERE 
+			promotion_no = #{promotion_no}
+	</update>
+
+
+
+</mapper>

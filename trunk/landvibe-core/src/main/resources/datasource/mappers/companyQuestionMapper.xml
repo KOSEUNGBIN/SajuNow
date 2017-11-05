@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.companyquestion.CompanyQuestionDao">
+	
+	<resultMap type="CompanyQuestion" id="questionResultMap">
+		<id property="question_no" column="question_no" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="register_date" column="register_date" />
+	</resultMap>
+	
+	<sql id="questionColumns">
+		question_no,
+		title,
+		content,
+		register_date
+	</sql>
+	
+	<insert id="insert" parameterType="CompanyQuestion">
+		INSERT INTO 
+			ft_company_question(
+				title,
+				content,
+				register_date
+			)
+			VALUES (
+				#{title},
+				#{content},
+				NOW()
+			)
+		<selectKey resultType="long" order="AFTER" keyProperty="question_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="selectByNo" resultMap="questionResultMap" parameterType="long">
+		SELECT
+			<include refid="questionColumns" />
+		FROM 
+			ft_company_question
+		WHERE 
+			question_no = #{question_no}
+	</select>
+	
+	<select id="selectList" resultMap="questionResultMap">
+		SELECT
+			<include refid="questionColumns" />  
+		FROM 
+			ft_company_question
+	</select>
+	
+	<select id="selectDateList" resultMap="questionResultMap">
+	<![CDATA[   
+		SELECT
+			question_no,
+			register_date
+		FROM 
+			ft_company_question
+		WHERE
+			DATE(register_date) >= DATE(SUBDATE(NOW(),INTERVAL 7 DAY)) AND DATE(register_date) <= DATE(NOW())
+	]]>
+	</select>
+	
+	<delete id="deleteByNo" parameterType="long">
+		DELETE
+		FROM 
+			ft_company_question
+		WHERE 
+			question_no = #{question_no}
+	</delete>
+
+	<update id="update" parameterType="CompanyQuestion">
+		UPDATE 
+			ft_company_question
+		SET
+			title = #{title},
+			content = #{content},
+			register_date = NOW()
+		WHERE 
+			question_no = #{question_no}
+	</update>
+
+
+
+</mapper>

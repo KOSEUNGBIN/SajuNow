@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.company.CompanyDao">
+
+	<resultMap type="Company" id="companyResultMap">
+		<id property="company_no" column="company_no" />
+		<result property="email" column="email" />
+		<result property="nick_name" column="nick_name" />
+		<result property="score_average" column="score_average" />
+		<result property="experience" column="experience" />
+		<result property="address" column="address" />
+		<result property="only_online" column="only_online" />
+		<result property="history_count" column="history_count" />
+		<result property="history_possibility_count" column="history_possibility_count" />
+		<result property="chat_count" column="chat_count" />
+		<result property="simple_chat_possibility_result" column="simple_chat_possibility_result" />
+		<result property="simple_history_possibility_count" column="simple_history_possibility_count" />
+		<result property="simple_chat_count" column="simple_chat_count" />
+		<result property="simple_chat_possibility" column="simple_chat_possibility" />
+		<result property="chat_possibility_result" column="chat_possibility_result" />
+		<result property="chat_switch" column="chat_switch" />
+		<result property="chat_possibility" column="chat_possibility" />
+		<result property="history_introduce" column="history_introduce" />	
+		<result property="greeting" column="greeting" />	
+		<result property="introduce" column="introduce" />
+		<result property="online_pay" column="online_pay" />
+		<result property="history_simple" column="history_simple" />
+		<result property="offline_pay" column="offline_pay" />
+		<result property="premium" column="premium" />
+		<result property="margin" column="margin" />
+		<result property="modify_date" column="modify_date" />
+		<result property="company_reg_id" column="company_reg_id" />
+		<result property="possible_time" column="possible_time" />
+		<result property="category_code" column="category_code" />
+		<result property="category_name" column="category_name" />
+		<result property="category_detail" column="category_detail" />
+		<result property="favorite_count" column="favorite_count" />
+		<result property="report_count" column="report_count" />
+	</resultMap>
+
+	<resultMap type="Company" id="companyResultMap_Report">
+		<id property="company_no" column="company_no" />
+		<result property="email" column="email" />
+		<result property="nick_name" column="nick_name" />
+		<result property="score_average" column="score_average" />
+		<result property="experience" column="experience" />
+		<result property="address" column="address" />
+		<result property="only_online" column="only_online" />
+		<result property="history_count" column="history_count" />
+		<result property="simple_chat_possibility_result" column="simple_chat_possibility_result" />
+		<result property="simple_history_possibility_count" column="simple_history_possibility_count" />
+		<result property="simple_chat_count" column="simple_chat_count" />
+		<result property="simple_chat_possibility" column="simple_chat_possibility" />
+		<result property="history_possibility_count" column="history_possibility_count" />
+		<result property="chat_count" column="chat_count" />
+		<result property="chat_possibility_result" column="chat_possibility_result" />
+		<result property="chat_switch" column="chat_switch" />
+		<result property="chat_possibility" column="chat_possibility" />
+		<result property="history_introduce" column="history_introduce" />
+		<result property="greeting" column="greeting" />
+		<result property="introduce" column="introduce" />
+		<result property="online_pay" column="online_pay" />
+		<result property="history_simple" column="history_simple" />
+		<result property="offline_pay" column="offline_pay" />
+		<result property="premium" column="premium" />
+		<result property="margin" column="margin" />
+		<result property="modify_date" column="modify_date" />
+		<result property="company_reg_id" column="company_reg_id" />
+		<result property="possible_time" column="possible_time" />
+		<result property="category_detail" column="category_detail" />
+		<result property="favorite_count" column="favorite_count" />
+		<result property="report_count" column="report_count" />
+		<collection property="companyToReport" column="company_id"
+			ofType="CompanyToReport" javaType="ArrayList">
+			<result property="report_no" column="report_no" />
+			<result property="company_no" column="company_no" />
+			<result property="score" column="score" />
+			<result property="comment" column="comment" />
+			<result property="register_date" column="register_date" />
+			<result property="user_nickname" column="user_nickname" />
+		</collection>
+	</resultMap>
+	
+	<resultMap type="Company" id="companyResultMap_Category">
+		<id property="company_no" column="company_no" />
+		<result property="email" column="email" />
+		<result property="nick_name" column="nick_name" />
+		<result property="score_average" column="score_average" />
+		<result property="experience" column="experience" />
+		<result property="address" column="address" />
+		<result property="only_online" column="only_online" />
+		<result property="history_count" column="history_count" />
+		<result property="simple_chat_possibility_result" column="simple_chat_possibility_result" />
+		<result property="simple_history_possibility_count" column="simple_history_possibility_count" />
+		<result property="simple_chat_count" column="simple_chat_count" />
+		<result property="simple_chat_possibility" column="simple_chat_possibility" />
+		<result property="history_possibility_count" column="history_possibility_count" />
+		<result property="chat_count" column="chat_count" />
+		<result property="chat_possibility_result" column="chat_possibility_result" />
+		<result property="chat_switch" column="chat_switch" />
+		<result property="chat_possibility" column="chat_possibility" />
+		<result property="history_introduce" column="history_introduce" />
+		<result property="greeting" column="greeting" />
+		<result property="introduce" column="introduce" />
+		<result property="online_pay" column="online_pay" />
+		<result property="history_simple" column="history_simple" />
+		<result property="offline_pay" column="offline_pay" />
+		<result property="premium" column="premium" />
+		<result property="margin" column="margin" />
+		<result property="modify_date" column="modify_date" />
+		<result property="company_reg_id" column="company_reg_id" />
+		<result property="possible_time" column="possible_time" />
+		<result property="category_detail" column="category_detail" />
+		<result property="favorite_count" column="favorite_count" />
+		<result property="report_count" column="report_count" />
+		<collection property="companyToCategory" column="company_id"
+			ofType="companyToCategory" javaType="ArrayList">
+			<result property="category_code" column="category_code" />
+			<result property="company_no" column="company_no" />
+			<result property="category_name" column="category_name" />
+			<result property="unitprice" column="unitprice" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="Company" id="companyResultList">
+		<id property="company_no" column="company_no" />
+		<result property="email" column="email" />
+		<result property="nick_name" column="nick_name" />
+		<result property="score_average" column="score_average" />
+		<result property="experience" column="experience" />
+		<result property="address" column="address" />
+		<result property="only_online" column="only_online" />
+		<result property="history_count" column="history_count" />
+		<result property="simple_chat_possibility_result" column="simple_chat_possibility_result" />
+		<result property="simple_history_possibility_count" column="simple_history_possibility_count" />
+		<result property="simple_chat_count" column="simple_chat_count" />
+		<result property="simple_chat_possibility" column="simple_chat_possibility" />
+		<result property="history_possibility_count" column="history_possibility_count" />
+		<result property="chat_count" column="chat_count" />
+		<result property="chat_possibility_result" column="chat_possibility_result" />
+		<result property="chat_switch" column="chat_switch" />
+		<result property="chat_possibility" column="chat_possibility" />
+		<result property="history_introduce" column="history_introduce" />
+		<result property="greeting" column="greeting" />
+		<result property="introduce" column="introduce" />
+		<result property="online_pay" column="online_pay" />
+		<result property="history_simple" column="history_simple" />
+		<result property="offline_pay" column="offline_pay" />
+		<result property="premium" column="premium" />
+		<result property="margin" column="margin" />
+		<result property="modify_date" column="modify_date" />
+		<result property="possible_time" column="possible_time" />
+		<result property="category_code" column="category_code" />
+		<result property="category_name" column="category_name" />
+		<result property="user_no" column="user_no" />
+		<result property="category_detail" column="category_detail" />
+		<result property="favorite_count" column="favorite_count" />
+		<result property="report_count" column="report_count" />
+	</resultMap>
+
+	<resultMap type="hashmap" id="SumAndCount">
+		<id property="sum" column=" sum(score)" />
+		<result property="count" column="COUNT(report_no)" />
+	</resultMap>
+
+	<sql id="companyColumns">
+		company_no,
+		email,
+		password,
+		nick_name,
+		score_average,
+		experience,
+		address,
+		only_online,
+		history_simple,
+		history_count,
+		simple_chat_possibility_result,
+		simple_history_possibility_count,
+		simple_chat_count,
+		simple_chat_possibility,
+		history_possibility_count,
+		chat_count,
+		chat_possibility_result,
+		chat_switch,
+		chat_possibility,
+		history_introduce,
+		greeting,
+		introduce,
+		online_pay,
+		offline_pay,
+		premium,
+		margin,
+		modify_date,
+		company_reg_id,
+		possible_time,
+		category_detail
+	</sql>
+
+	<insert id="insert" parameterType="Company">
+		INSERT INTO
+		ft_company(
+		email,
+		password,
+		nick_name,
+		score_average,
+		experience,
+		address,
+		only_online,
+		history_simple,
+		history_count,
+		greeting,
+		introduce,
+		online_pay,
+		offline_pay,
+		company_reg_id,
+		modify_date,
+		possible_time,
+		category_detail
+		)
+		VALUES (
+		#{email},
+		#{password},
+		#{nick_name},
+		#{score_average},
+		#{experience},
+		#{address},
+		#{only_online},
+		#{history_simple},
+		#{history_count},
+		#{greeting},
+		#{introduce},
+		#{online_pay},
+		#{offline_pay},
+		#{company_reg_id},
+		NOW(),
+		#{possible_time},
+		#{category_detail}
+		)
+		<selectKey resultType="long" order="AFTER" keyProperty="company_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="selectCount" resultType="long">
+		SELECT COUNT( * )
+		FROM
+		`ft_company`
+	</select>
+
+
+	<select id="select" resultMap="companyResultMap" parameterType="long">
+		SELECT
+		<include refid="companyColumns" />
+		FROM
+		ft_company
+		WHERE
+		company_no = #{company_no}
+	</select>
+
+	<select id="selectAll" resultMap="companyResultMap">
+		SELECT
+		<include refid="companyColumns" />
+		FROM
+		ft_company
+	</select>
+	
+	<select id="selectSection" resultMap="companyResultMap" parameterType="long">
+		SELECT
+			<include refid="companyColumns" />
+		FROM
+			ft_company
+		LIMIT 
+			#{selectNo},15
+	</select>
+
+	<select id="selectByEmail" resultMap="companyResultMap"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		ft_company
+		WHERE
+		email = #{email}
+	</select>
+
+
+	<select id="getSum" resultType="float" parameterType="long">
+
+		SELECT
+		sum(score)/ COUNT(report_no)
+		FROM
+		ft_report
+		INNER JOIN
+		ft_company_report
+		ON
+		report_id = report_no
+		WHERE
+		company_id = #{company_no}
+
+	</select>
+
+	<select id="Login" resultMap="companyResultMap" parameterType="String">
+		SELECT
+		company_no, nick_name ,company_reg_id , history_possibility_count , chat_count
+		FROM
+		ft_company
+		WHERE
+		email = #{email} and password = #{password}
+	</select>
+
+	<select id="selectJoinCompanyToCategory" resultMap="companyResultMap"
+		parameterType="hashmap">
+		SELECT
+		ft_company.*,
+		GROUP_CONCAT(ft_category.category_code SEPARATOR '/') AS category_code,
+		GROUP_CONCAT(ft_category.category_name SEPARATOR '/') AS category_name
+		FROM
+		ft_company
+		INNER JOIN
+		ft_company_category
+		ON
+		ft_company.company_no = ft_company_category.company_no
+		LEFT OUTER JOIN
+		ft_category
+		ON
+		ft_company_category.category_code = ft_category.category_code
+		GROUP BY
+		ft_company.company_no
+		ORDER BY
+		ft_company.company_no
+		LIMIT #{START}, #{SIZE}
+	</select>
+
+	<select id="selectJoinCategoryByCode" resultMap="companyResultMap"
+		parameterType="hashmap">
+		SELECT
+		ft_company.*,
+		ft_category.category_code AS category_code,
+		ft_category.category_name AS category_name
+		FROM
+		ft_company
+		INNER JOIN
+		ft_company_category
+		ON
+		ft_company.company_no = ft_company_category.company_no
+		LEFT OUTER JOIN
+		ft_category
+		ON
+		ft_company_category.category_code = ft_category.category_code
+		WHERE
+		ft_company_category.category_code = #{category_code}
+		GROUP BY
+		ft_company.company_no
+		ORDER BY
+		ft_company.company_no
+		LIMIT #{START}, #{SIZE}
+	</select>
+
+	<select id="selectJoinCompanyToReport" resultMap="companyResultMap_Report"
+		parameterType="long">
+		SELECT
+			*
+		FROM
+		( 	ft_report
+		INNER JOIN
+			ft_company_report
+		ON
+			ft_report.report_no = ft_company_report.report_id
+		)
+		INNER JOIN
+			ft_company
+		ON
+			ft_company.company_no = ft_company_report.company_id
+		WHERE
+			ft_company.company_no = #{company_no}
+		ORDER BY report_no Desc
+	</select>
+	
+
+	<select id="selectJoinCompanyToCategoryByCompany" resultMap="companyResultMap_Category"
+		parameterType="long">
+		SELECT
+			ft_company.*,
+			ft_company_category.category_code,
+			category_name,
+			unitprice
+		FROM
+		( 	ft_category
+		RIGHT JOIN
+			ft_company_category
+		ON
+			ft_category.category_code = ft_company_category.category_code
+		)
+		RIGHT JOIN
+			ft_company
+		ON
+			ft_company.company_no = ft_company_category.company_no
+		WHERE
+			ft_company.company_no = #{company_no}
+		ORDER BY category_code Asc
+	</select>
+
+	<select id="selectCompanyReportCount" resultType="int"
+		parameterType="long">
+		SELECT
+			COUNT(*)
+		FROM
+		( 	ft_report
+		INNER JOIN
+			ft_company_report
+		ON
+			ft_report.report_no = ft_company_report.report_id
+		)
+		INNER JOIN
+			ft_company
+		ON
+			ft_company.company_no = ft_company_report.company_id
+		WHERE
+			ft_company.company_no = #{company_no}
+	</select>
+
+	<select id="totalOfCompanys" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			ft_company
+	</select>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+			ft_company
+		WHERE
+			company_no = #{company_no}
+	</delete>
+
+	<update id="update" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			greeting = #{greeting},
+			introduce = #{introduce},
+			history_introduce = #{history_introduce}
+		WHERE
+			company_no = #{company_no}
+	</update>
+
+	<update id="updateScoreAverage" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			score_average = #{score_average}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<select id="selectByToken" resultType="int"
+		parameterType="String">
+		SELECT
+			COUNT(*)
+		FROM
+			ft_company
+		WHERE
+			company_token = #{company_token}
+	</select>
+	
+	<select id="selectForBlock" resultType="String"
+		parameterType="int">
+		SELECT
+			company_reg_id
+		FROM
+			ft_company
+		WHERE
+			company_no = #{company_no}
+	</select>
+
+
+	<select id="selectAlljoinUserJoinCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT
+		ft_company.*,
+		GROUP_CONCAT(ft_category.category_code SEPARATOR '/') AS category_code,
+		GROUP_CONCAT(ft_category.category_name SEPARATOR '/') AS
+		category_name,
+		IFNULL(ft_user_favorite.user_no, -1) AS user_no
+		FROM
+		ft_company
+		JOIN
+		ft_user_favorite
+		ON
+		ft_company.company_no = ft_user_favorite.company_no and ft_user_favorite.user_no =
+		#{user_no}
+		INNER JOIN
+		ft_company_category
+		ON
+		ft_company.company_no = ft_company_category.company_no
+		LEFT OUTER JOIN
+		ft_category
+		ON
+		ft_company_category.category_code = ft_category.category_code
+		GROUP BY
+		ft_company.company_no
+		ORDER BY
+		ft_company.company_no
+	</select>
+	
+<select id="selectAllSimpleCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT
+		 ft_company.company_no,
+		 favorite_count,
+		 report_count,
+		 nick_name,
+		 score_average,
+		 experience,
+		 simple_chat_possibility_result,
+		 chat_possibility,
+		 chat_switch, 
+		 chat_possibility_result,
+		 greeting, introduce,
+		 category_detail,
+		 company_reg_id
+		  FROM
+		(
+			(
+			SELECT  
+			if (isnull(user_no),0 , count(*)) as favorite_count,
+		   ft_company .company_no
+			FROM 
+			ft_company left join ft_user_favorite 
+                       on ft_company .company_no = ft_user_favorite .company_no
+			GROUP BY  ft_company .company_no) as A
+			left join 
+			(
+ 			SELECT  
+			count(*) as report_count, 
+			company_id
+			FROM 
+			ft_company_report
+			GROUP BY  company_id
+			) as B on A.company_no = B.company_id
+		)
+		right join
+		 ft_company on ft_company.company_no = A.company_no
+		where history_simple = 1
+		ORDER BY premium Desc, company_no Asc
+	</select>
+	
+	<select id="selectAllOuterjoinUserJoinCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT
+		 ft_company.company_no,
+		 favorite_count,
+		 report_count,
+		 nick_name,
+		 score_average,
+		 experience,
+		 simple_chat_possibility_result,
+		 chat_possibility,
+		 chat_switch, 
+		 chat_possibility_result,
+		 greeting, introduce,
+		 category_detail,
+		 company_reg_id
+		  FROM
+		(
+			(
+			SELECT  
+			if (isnull(user_no),0 , count(*)) as favorite_count,
+		   ft_company .company_no
+			FROM 
+			ft_company left join ft_user_favorite 
+                       on ft_company .company_no = ft_user_favorite .company_no
+			GROUP BY  ft_company .company_no) as A
+			left join 
+			(
+ 			SELECT  
+			count(*) as report_count, 
+			company_id
+			FROM 
+			ft_company_report
+			GROUP BY  company_id
+			) as B on A.company_no = B.company_id
+		)
+		right join
+		 ft_company on ft_company.company_no = A.company_no
+		ORDER BY premium Desc, company_no Asc
+	</select>
+	
+	<select id="selectOuterjoinUserJoinCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT ft_company.company_no, favorite_count, report_count, nick_name, score_average, experience, simple_chat_possibility_result, chat_possibility, chat_switch, chat_possibility_result, greeting, introduce, category_detail , category_code, company_reg_id FROM 
+(
+(
+		SELECT  
+			if (isnull(user_no),0 , count(*)) as favorite_count,
+		   ft_company .company_no
+			FROM 
+			ft_company left join ft_user_favorite 
+                       on ft_company .company_no = ft_user_favorite .company_no
+			GROUP BY  ft_company .company_no) as A
+			left join  (
+ SELECT  
+				count(*) as report_count, company_id
+				FROM 
+				ft_company_report
+GROUP BY  company_id
+) as B on A.company_no = B.company_id
+)right join ft_company on ft_company.company_no = A.company_no 
+ right join ft_company_category on ft_company.company_no = ft_company_category.company_no
+where category_code = #{category_code}
+group by company_no
+ORDER BY premium Desc, company_no Asc
+	</select>
+
+	<!-- <select id="selectAllOuterjoinUserJoinCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT
+		ft_company.*,
+		GROUP_CONCAT(ft_category.category_code SEPARATOR '/') AS category_code,
+		GROUP_CONCAT(ft_category.category_name SEPARATOR '/') AS
+		category_name,
+		IFNULL(ft_user_favorite.user_no, -1) AS user_no
+		FROM
+		ft_company
+		LEFT OUTER JOIN
+		ft_user_favorite
+		ON
+		ft_company.company_no = ft_user_favorite.company_no and ft_user_favorite.user_no =
+		#{user_no}
+		INNER JOIN
+		ft_company_category
+		ON
+		ft_company.company_no = ft_company_category.company_no
+		LEFT OUTER JOIN
+		ft_category
+		ON
+		ft_company_category.category_code = ft_category.category_code
+		GROUP BY
+		ft_company.company_no
+		ORDER BY
+		ft_company.company_no
+		LIMIT #{offset}, #{limit}
+	</select>
+
+	<select id="selectOuterjoinUserJoinCategory" resultMap="companyResultList"
+		parameterType="hashmap">
+		SELECT
+		ft_company.*,
+		ft_category.category_code AS category_code,
+		ft_category.category_name AS category_name,
+		IFNULL(ft_user_favorite.user_no, -1) AS user_no
+		FROM
+		ft_company
+		LEFT OUTER JOIN
+		ft_user_favorite
+		ON
+		ft_company.company_no = ft_user_favorite.company_no and ft_user_favorite.user_no =
+		#{user_no}
+		INNER JOIN
+		ft_company_category
+		ON
+		ft_company.company_no = ft_company_category.company_no
+		LEFT OUTER JOIN
+		ft_category
+		ON
+		ft_company_category.category_code = ft_category.category_code
+		WHERE
+		ft_company_category.category_code = #{category_code}
+		GROUP BY
+		ft_company.company_no
+		ORDER BY
+		ft_company.company_no
+		LIMIT #{offset}, #{limit}
+	</select> -->
+
+	<update id="updateChatCountAndChatPossibility">
+	<![CDATA[   		
+		UPDATE
+   			ft_company
+   		SET
+   			ft_company.chat_count = IF (#{variation} = "INCREASE", chat_count+1, IF (0 < chat_count, chat_count-1, chat_count)),
+			ft_company.chat_possibility = IF (#{variation} = "INCREASE",(chat_count < history_possibility_count)&& chat_possibility, (chat_count < history_possibility_count))
+   		WHERE
+   			ft_company.company_no = #{company_no}
+	]]>
+	</update>
+	
+	<update id="updateSimpleChatCountAndChatPossibility">
+	<![CDATA[   		
+		UPDATE
+   			ft_company
+   		SET
+   			ft_company.simple_chat_count = IF (#{variation} = "INCREASE", simple_chat_count+1, IF (0 < simple_chat_count, simple_chat_count-1, simple_chat_count)),
+			ft_company.simple_chat_possibility = IF (#{variation} = "INCREASE",(simple_chat_count < simple_history_possibility_count)&& simple_chat_possibility, (simple_chat_count < simple_history_possibility_count))
+   		WHERE
+   			ft_company.company_no = #{company_no}
+	]]>
+	</update>
+	
+<!-- 	<update id="updateChatCountAndChatPossibility">
+	<![CDATA[   		
+		UPDATE
+   			ft_company, ft_schedule
+   		SET
+   			ft_company.chat_count = IF (#{variation} = "INCREASE", chat_count+1, IF (0 < chat_count, chat_count-1, chat_count)),
+			ft_company.chat_possibility = IF (IF (#{variation} = "INCREASE",(chat_count < history_possibility_count)&& chat_possibility, (chat_count < history_possibility_count))  && CASE #{slot_no}
+				WHEN "slot_09" THEN ft_schedule.slot_09
+				WHEN "slot_10" THEN ft_schedule.slot_10
+				WHEN "slot_11" THEN ft_schedule.slot_11
+				WHEN "slot_12" THEN ft_schedule.slot_12
+				WHEN "slot_13" THEN ft_schedule.slot_13
+				WHEN "slot_14" THEN ft_schedule.slot_14
+				WHEN "slot_15" THEN ft_schedule.slot_15
+				WHEN "slot_16" THEN ft_schedule.slot_16
+				WHEN "slot_17" THEN ft_schedule.slot_17
+				WHEN "slot_18" THEN ft_schedule.slot_18
+				WHEN "slot_19" THEN ft_schedule.slot_19
+				ELSE 1
+				END, 1, 0)
+   		WHERE
+   			ft_company.company_no = #{company_no} and ft_company.company_no = ft_schedule.company_no and ft_schedule.date = #{date}
+	]]>
+	</update> -->
+
+	<update id="updateChatPossibility" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			chat_possibility = #{chat_possibility}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateSimpleChatPossibility" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			simple_chat_possibility = #{simple_chat_possibility}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateHistoryPossibilityCount" parameterType="Company">
+	<![CDATA[   
+		UPDATE
+			ft_company
+		SET
+			history_possibility_count = #{history_possibility_count},
+			chat_possibility = #{chat_possibility},
+			chat_possibility_result = chat_switch && #{chat_possibility},
+			simple_history_possibility_count = #{simple_history_possibility_count},
+			simple_chat_possibility = #{simple_chat_possibility},
+			simple_chat_possibility_result = chat_switch && #{simple_chat_possibility}
+		WHERE
+			company_no = #{company_no}
+	]]>
+	</update>
+
+	<update id="updateToken" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			company_token = #{company_token}
+		WHERE
+			company_no = #{company_no}
+	</update>
+
+	<update id="updateRegId" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			company_reg_id = #{company_reg_id}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updatePremium" parameterType="long">
+		UPDATE
+			ft_company
+		SET
+			premium = #{premium}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updatemargin" parameterType="long">
+		UPDATE
+			ft_company
+		SET
+			margin = #{margin}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateChatPossibilityResult" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			chat_possibility_result = #{chat_possibility_result}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateSimpleChatPossibilityResult" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			simple_chat_possibility_result = #{simple_chat_possibility_result}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateAllChatPossibilityResult" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			chat_possibility_result = #{chat_possibility_result},
+			simple_chat_possibility_result = #{simple_chat_possibility_result}
+		WHERE
+			company_no = #{company_no}
+	</update>
+	
+	<update id="updateChatSwitch" parameterType="Company">
+		UPDATE
+			ft_company
+		SET
+			chat_switch = #{chat_switch}
+		WHERE
+			company_no = #{company_no}
+	</update>
+
+	<select id="selectByUserRegId" parameterType="String" resultMap="companyResultMap">
+		SELECT
+			company_no
+		FROM
+			ft_company
+		WHERE
+			company_reg_id = #{user_reg_id}
+
+	</select>
+	
+	
+
+	<update id="updateChatPossibilityAll">
+	<![CDATA[   		
+		UPDATE
+			ft_company, ft_schedule
+		SET
+			ft_company.chat_switch = IF ( CASE #{slot_no}
+				WHEN "slot_09" THEN ft_schedule.slot_09
+				WHEN "slot_10" THEN ft_schedule.slot_10
+				WHEN "slot_11" THEN ft_schedule.slot_11
+				WHEN "slot_12" THEN ft_schedule.slot_12
+				WHEN "slot_13" THEN ft_schedule.slot_13
+				WHEN "slot_14" THEN ft_schedule.slot_14
+				WHEN "slot_15" THEN ft_schedule.slot_15
+				WHEN "slot_16" THEN ft_schedule.slot_16
+				WHEN "slot_17" THEN ft_schedule.slot_17
+				WHEN "slot_18" THEN ft_schedule.slot_18
+				WHEN "slot_19" THEN ft_schedule.slot_19
+				ELSE 1
+				END
+			, 1, 0)
+		WHERE
+			ft_company.company_no = ft_schedule.company_no and ft_schedule.date = #{date}
+	]]>
+	</update>
+	
+	
+
+</mapper>

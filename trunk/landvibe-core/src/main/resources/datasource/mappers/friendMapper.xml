@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.friend.FriendDao">
+
+	<resultMap type="Friend" id="friendResultMap">
+		<id property="friend_no" column="friend_no" />
+		<result property="user_no" column="user_no" />
+		<result property="email" column="email" />
+		<result property="name" column="name" />
+		<result property="birthday" column="birthday" />
+		<result property="birthday_detail" column="birthday_detail" />
+		<result property="solarlunar" column="solarlunar" />
+		<result property="gender" column="gender" />
+		<result property="modify_date" column="modify_date" />
+	</resultMap>
+
+	<sql id="friendColumns">
+		friend_no,
+		user_no,
+		email,
+		name,
+		birthday,
+		birthday_detail,
+		solarlunar,
+		gender,
+		modify_date
+	</sql>
+
+
+	<insert id="insert" parameterType="Friend">
+		INSERT INTO 
+			ft_friend(
+				user_no,
+				email,
+				name,
+				birthday,
+				birthday_detail,
+				solarlunar,
+				gender,
+				modify_date
+			)
+			VALUES (
+				#{user_no},
+				#{email},
+				#{name},
+				#{birthday},
+				#{birthday_detail},
+				#{solarlunar},
+				#{gender},
+				NOW()
+			)
+		<selectKey resultType="long" order="AFTER" keyProperty="friend_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM 
+			ft_friend
+		WHERE 
+			friend_no = #{friend_no}
+	</delete>
+
+	<update id="update" parameterType="Friend">
+		UPDATE 
+			ft_friend
+		SET
+			email = #{email},
+			name = #{name},
+			birthday = #{birthday},
+			birthday_detail=#{birthday_detail},
+			solarlunar=#{solarlunar},
+			gender=#{gender},
+			modify_date = NOW()
+		WHERE
+			friend_no = #{friend_no}
+	</update>
+
+	<select id="selectByNo" resultMap="friendResultMap" parameterType="long">
+		SELECT
+			*
+		FROM 
+			ft_friend
+		WHERE 
+			friend_no = #{friend_no}
+	</select>
+	
+	<select id="selectByUser" resultMap="friendResultMap" parameterType="long">
+		SELECT
+			*
+		FROM 
+			ft_friend
+		WHERE 
+			user_no = #{user_no}
+	</select>
+	
+	<select id="selectAll" resultMap="friendResultMap">
+		SELECT
+			<include refid="friendColumns" />
+		FROM 
+			ft_friend
+	</select>
+		
+</mapper>

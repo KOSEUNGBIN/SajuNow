@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.pay.PaymentDao">
+
+	<resultMap type="Payment" id="paymentResultMap">
+		<id property="payment_no" column="payment_no" />
+		<result property="user_no" column="user_no" />
+		<result property="company_no" column="company_no" />
+		<result property="history_no" column="history_no" />
+		<result property="unitprice" column="unitprice" />
+		<result property="tid" column="tid" />
+		<result property="replycode" column="replycode" />
+		<result property="cardtype" column="cardtype" />
+		<result property="payment_date" column="payment_date" />
+		<result property="receipttoemail" column="receipttoemail" />
+		
+	</resultMap>
+	
+	<resultMap type="Payment" id="paymentMonthResultMap">
+		<result property="payment_date_month" column="payment_date_month" />
+		<result property="payment_count_month" column="payment_count_month" />
+		<result property="payment_sum_month" column="payment_sum_month" />
+		
+	</resultMap>
+
+	<sql id="paymentColumns">
+		
+
+	</sql>
+
+
+	<insert id="insert" parameterType="Payment">
+		INSERT INTO
+		ft_payment(
+		unitprice,
+		tid,
+		cardtype,
+		receipttoemail,
+		replycode,
+		payment_date
+		)
+		VALUES (
+		#{unitprice},
+		#{tid},
+		#{cardtype},
+		#{receipttoemail},
+		#{replycode},
+		NOW()
+		)
+
+		<selectKey resultType="long" order="AFTER" keyProperty="payment_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+
+	</insert>
+	
+	<select id="selectKey" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="selectSumByCompanyNo" resultType="long" parameterType="long">
+		SELECT
+		 		ifnull(Round(SUM(unitprice*(10/11)/margin*100),-1),0) AS sumPayment
+     	FROM 
+     		ft_payment
+	 	WHERE
+	 		company_no = #{company_no}
+	</select>
+	
+	<select id="selectCountAndSumByCompanyNoOfMonth" resultMap="paymentMonthResultMap" parameterType="long">
+		SELECT
+		 	DATE_FORMAT( payment_date,  '%Y-%m' ) AS payment_date_month, COUNT( * ) AS  payment_count_month, Round(SUM(unitprice*(10/11)/margin*100),-1) AS payment_sum_month
+     	FROM 
+     		ft_payment
+	 	WHERE
+	 		company_no = #{company_no} AND DATE(payment_date) >= DATE(SUBDATE(NOW(),INTERVAL 6 MONTH)) 
+ 		GROUP BY DATE_FORMAT( payment_date,  '%Y-%m' )
+ 		ORDER BY DATE_FORMAT( payment_date,  '%Y-%m' )   
+	</select>
+	
+	<update id="updateBase" parameterType="Payment">
+		UPDATE
+		ft_payment
+		SET
+		user_no = #{user_no},
+		company_no = #{company_no},
+		history_no = #{history_no},
+		margin = #{margin}
+		WHERE
+		receipttoemail = #{receipttoemail}
+		ORDER BY payment_date DESC LIMIT 1;
+	</update>
+
+</mapper>

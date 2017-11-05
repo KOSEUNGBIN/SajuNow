@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="#{config['db.driver.className']}"/>
+		<property name="initialSize" value="#{config['db.pool.conn.initialSize']}"/>
+		<property name="maxTotal" value="#{config['db.pool.conn.maxTotal']}"/>
+		<property name="maxIdle" value="#{config['db.pool.conn.maxIdle']}"/>
+		<property name="minIdle" value="#{config['db.pool.conn.minIdle']}"/>
+		<property name="maxWaitMillis" value="#{config['db.pool.conn.maxWaitMillis']}"/>
+		<property name="timeBetweenEvictionRunsMillis" value="#{config['db.pool.conn.timeBetweenEvictionRunsMillis']}"/>
+		<property name="numTestsPerEvictionRun" value="#{config['db.pool.conn.numTestsPerEvictionRun']}"/>
+		<property name="poolPreparedStatements" value="#{config['db.pool.conn.poolPreparedStatements']}"/>
+		<property name="maxOpenPreparedStatements" value="#{config['db.pool.conn.maxOpenPreparedStatements']}"/>
+		<property name="testWhileIdle" value="true"/>
+		<property name="validationQuery" value="SELECT 1"/>
+		<property name="minEvictableIdleTimeMillis" value="-1"/>
+		<property name="url" value="#{config['db.jdbc.url']}"/>
+		<property name="username" value="#{config['db.username']}"/>
+		<property name="password" value="#{config['db.password']}"/>
+	</bean>
+
+	<!-- Transaction manager for a single JDBC DataSource -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:/datasource/config.xml"/>
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>
+
+	<mybatis:scan base-package="com.landvibe.core"
+				  annotation="org.springframework.stereotype.Repository"
+				  template-ref="sqlSession"/>
+</beans>

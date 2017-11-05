@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.category.CategoryDao">
+	
+	<resultMap type="Category" id="categoryResultMap">
+		<id property="category_code" column="category_code" />
+		<id property="category_name" column="category_name" />
+		<id property="unitprice" column="unitprice" />
+	</resultMap>
+	
+	<sql id="categoryColumns">
+		category_code,
+		category_name,
+		unitprice
+	</sql>
+	
+	<insert id="insert" parameterType="Category">
+		INSERT INTO 
+			ft_category(
+				category_name
+			)
+			VALUES (
+				#{category_name}
+			)
+		<selectKey resultType="long" order="AFTER" keyProperty="category_code">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<select id="selectByCode" parameterType="long" resultMap="categoryResultMap">
+		SELECT
+			<include refid="categoryColumns" />
+		FROM 
+			ft_category
+		WHERE
+			category_code = #{category_code}
+	</select>
+	
+	<select id="selectAll" resultMap="categoryResultMap">
+		SELECT
+			<include refid="categoryColumns" />
+		FROM 
+			ft_category
+	</select>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM 
+			ft_category
+		WHERE 
+			category_code = #{category_code}
+	</delete>
+
+	<update id="update" parameterType="Category">
+		UPDATE
+			ft_category
+		SET
+			category_name = #{category_name}
+		WHERE 
+			category_code = #{category_code}
+	</update>
+</mapper>

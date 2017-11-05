@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.exchange.ExchangeDao">
+
+	<resultMap type="Exchange" id="exchangeResultMap">
+		<id property="exchange_no" column="exchange_no" />
+		<result property="company_no" column="company_no" />
+		<result property="exchange_amount" column="exchange_amount" />
+		<result property="status" column="status" />
+		<result property="exchange_date" column="exchange_date" />
+	</resultMap>
+	
+		<resultMap type="Exchange" id="exchangeWaitingResultMap">
+		<id property="exchange_no" column="exchange_no" />
+		<result property="company_no" column="company_no" />
+		<result property="exchange_amount" column="exchange_amount" />
+		<result property="nick_name" column="nick_name" />
+		<result property="exchange_date" column="exchange_date" />
+	</resultMap>
+	
+	<resultMap type="Exchange" id="exchangeMonthResultMap">
+		<result property="exchange_date_month" column="exchange_date_month" />
+		<result property="exchange_count_month" column="exchange_count_month" />
+		<result property="exchange_sum_month" column="exchange_sum_month" />
+	</resultMap>
+
+
+	<insert id="insert" parameterType="Exchange">
+		INSERT INTO
+		ft_exchange(
+		company_no,
+		exchange_amount,
+		exchange_date
+		)
+		VALUES (
+		#{company_no},
+		#{exchange_amount},
+		NOW()
+		)
+		<selectKey resultType="long" order="AFTER" keyProperty="company_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<select id="selectKey" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="selectByCompanyNo" resultMap="exchangeResultMap">
+		SELECT
+			*
+		FROM
+			ft_exchange
+		WHERE
+		  	company_no = #{company_no} AND status = "WAITING"
+		  	ORDER BY exchange_date Desc
+	</select>
+	
+	<select id="selectAllWaiting" resultMap="exchangeWaitingResultMap">
+		SELECT company_no, nick_name, exchange_no, exchange_amount, exchange_date 
+		FROM ft_exchange NATURAL JOIN ft_company 
+		WHERE status = "WAITING"
+	
+	</select>
+	
+	<select id="selectSumByCompanyNo" resultType="long" parameterType="long">
+	<![CDATA[  
+		SELECT
+		 	ifnull(SUM(exchange_amount),0) AS sumExchange
+     	FROM 
+     		ft_exchange
+	 	WHERE
+	 		company_no = #{company_no} AND status = "WAITING"
+	 ]]>
+	</select>
+	
+	<select id="selectDoneSumByCompanyNo" resultType="long" parameterType="long">
+	<![CDATA[  
+		SELECT
+		 	ifnull(SUM(exchange_amount),0) AS sumExchange
+     	FROM 
+     		ft_exchange
+	 	WHERE
+	 		company_no = #{company_no} AND status = "done"
+	 ]]>
+	</select>
+	
+	<select id="selectCountAndSumByCompanyNoOfMonth" resultMap="exchangeMonthResultMap" parameterType="long">
+		SELECT
+		 	DATE_FORMAT( exchange_date,  '%Y-%m' ) AS exchange_date_month, COUNT( * ) AS  exchange_count_month, SUM(exchange_amount) AS exchange_sum_month
+     	FROM 
+     		ft_exchange
+	 	WHERE
+	 		company_no = #{company_no} AND status = "done" AND DATE(exchange_date) >= DATE(SUBDATE(NOW(),INTERVAL 6 MONTH))
+ 		GROUP BY DATE_FORMAT( exchange_date,  '%Y-%m' )
+ 		ORDER BY DATE_FORMAT( exchange_date,  '%Y-%m' )   
+	</select>
+	
+	<update id="update" parameterType="long">
+		UPDATE
+		ft_exchange
+		SET
+	    status = "DONE"
+		WHERE
+		exchange_no = #{exchange_no}
+	</update>
+	
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+			ft_exchange
+		WHERE
+			exchange_no = #{exchange_no}
+	</delete>
+	
+	
+
+
+<!-- 	<select id="selectCount" resultType="long">
+		SELECT COUNT( * )
+		FROM `ft_user`
+	</select>
+
+	<select id="selectByNo" resultMap="userResultMap" parameterType="long">
+		SELECT
+		*
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</select>
+	
+	<select id="selectUserRegIdByNaverId"  resultMap="userResultMap" parameterType="String">
+		SELECT
+		user_reg_id, email, user_no
+		FROM
+		ft_user
+		WHERE
+		naver_id = #{naver_id}
+	</select>
+	
+	<select id="selectUserRegIdByFacebookId"  resultMap="userResultMap" parameterType="String">
+		SELECT
+		user_reg_id, email, user_no
+		FROM
+		ft_user
+		WHERE
+		facebook_id = #{facebook_id}
+	</select>
+
+
+	<select id="selectForLogin" resultMap="userResultMap"
+		parameterType="String">
+		SELECT
+		user_no, name, user_reg_id, naver_id
+		FROM
+		ft_user
+		WHERE
+		email = #{email} and password = #{password}
+	</select>
+
+	<select id="selectByToken" resultType="int"
+		parameterType="String">
+		SELECT
+		COUNT(*)
+		FROM
+		ft_user
+		WHERE
+		user_token = #{user_token}
+	</select>
+	
+	<select id="selectForBlock" resultType="String"
+		parameterType="int">
+		SELECT
+		user_reg_id
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</select>
+
+	<select id="selectByEmail" resultMap="userResultMap"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		ft_user
+		WHERE
+		email = #{email}
+	</select>
+
+	<select id="selectAll" resultMap="userResultMap">
+		SELECT
+			<include refid="userColumns" />
+		FROM
+			ft_user
+	</select>
+	
+	<select id="selectSection" resultMap="userResultMap" parameterType="long">
+		SELECT
+			<include refid="userColumns" />
+		FROM
+			ft_user
+		LIMIT 
+			#{selectNo},15
+	</select>
+
+	<select id="selectJoinFavorite" resultMap="userResultMap">
+		SELECT
+		ft_user.
+		<include refid="userColumns" />
+		,
+		ft_user_favorite.*
+		FROM
+		ft_user
+		INNER JOIN
+		ft_user_favorite
+		ON
+		ft_user.user_no = ft_user_favorite.user_no
+
+	</select>
+
+
+	<select id="selectByCompanyRegId" parameterType="String"
+		resultMap="userResultMap">
+		SELECT
+		user_no
+		FROM
+		ft_user
+		WHERE
+		user_reg_id = #{company_reg_id}
+
+	</select>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</delete>
+
+	<update id="update" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		birthday = #{birthday},
+		birthday_detail = #{birthday_detail},
+		gender = #{gender},
+		solarlunar = #{solarlunar},
+		modify_date = NOW()
+		WHERE
+		user_no = #{user_no}
+	</update>
+
+	<update id="updateToken" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		user_token = #{user_token}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updatePassword" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		password = #{password}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updateNaverId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		naver_id = #{naver_id}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updateFacebookId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		facebook_id = #{facebook_id}
+		WHERE
+		user_no = #{user_no}
+	</update>
+
+	<update id="updateRegId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		user_reg_id = #{user_reg_id}
+		WHERE
+		user_no = #{user_no}
+	</update> -->
+</mapper>

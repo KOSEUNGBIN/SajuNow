@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.chatmessage.ChatMessageDao">
+	
+	<resultMap type="ChatMessage" id="chatMessageResultMap">
+		<id property="message_no" column="message_no" />
+		<result property="history_no" column="history_no" />
+		<result property="message" column="message" />
+		<result property="sender" column="sender" />
+		<result property="send_date" column="send_date" />
+	</resultMap>
+	
+	<sql id="chatMessageColumns">
+		message_no,
+		history_no,
+		message,
+		sender,
+		send_date
+	</sql>
+	
+	<insert id="insert" parameterType="ChatMessage">
+		INSERT INTO 
+			ft_message(
+				history_no,
+				message,
+				sender,
+				send_date
+			)
+			VALUES (
+				#{history_no},
+				#{message},
+				#{sender},
+				NOW()
+			)
+		<selectKey resultType="long" order="AFTER" keyProperty="message_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+</mapper>

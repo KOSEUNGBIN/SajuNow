@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.userfavorite.UserFavoriteDao">
+
+
+	<resultMap type="UserFavorite" id="userFavoriteMap">
+		<id property="user_no" column="user_no" />
+		<result property="company_no" column="company_no" />
+	</resultMap>
+
+
+	<insert id="insert" parameterType="long">
+		INSERT INTO
+		ft_user_favorite(
+		user_no,
+		company_no
+		)
+		VALUES (
+		#{user_no},
+		#{company_no}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+		ft_user_favorite
+		WHERE
+		user_no = #{user_no} and company_no = #{company_no}
+	</delete>
+
+	<select id="select" resultMap="userFavoriteMap" parameterType="long">
+		SELECT
+		*
+		FROM
+		ft_user_favorite
+		WHERE
+		company_no = #{company_no}
+		and
+		user_no =
+		#{user_no}
+	</select>
+
+	<select id="selectFavoriteCount" resultType="long" parameterType="long">
+		SELECT COUNT( * )
+		FROM
+		ft_user_favorite
+		WHERE company_no = #{company_no}
+	</select>
+
+</mapper>

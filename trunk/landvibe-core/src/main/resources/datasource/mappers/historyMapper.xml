@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.history.HistoryDao">
+
+
+	<resultMap type="History" id="historyResultMap">
+		<id property="history_no" column="history_no" />
+		<result property="offline_yn" column="offline_yn" />
+		<result property="end_yn" column="end_yn" />	
+		<result property="simple_history_end_yn" column="simple_history_end_yn" />	
+		<result property="select_history" column="select_history" />
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+		<result property="user_no" column="user_no" />
+		<result property="company_not_read" column="company_not_read" />
+		<result property="is_report_alarmed" column="is_report_alarmed" />
+		<result property="company_no" column="company_no" />
+		<result property="isdeleted_user" column="isdeleted_user" />
+		<result property="isdeleted_company" column="isdeleted_company" />
+		<collection property="msgList" column="message_no" ofType="ChatMessage"
+			javaType="ArrayList">
+			<id property="message_no" column="message_no" />
+			<result property="history_no" column="history_no" />
+			<result property="reg_id" column="reg_id" />
+			<result property="sender" column="sender" />
+			<result property="message" column="message" />
+			<result property="send_date" column="send_date" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="History" id="historyIdMap">
+		<result property="user_reg_id" column="user_reg_id" />
+		<result property="company_reg" column="company_reg" />
+	</resultMap>
+	
+	<resultMap type="History" id="historyRankCountMap">
+		<result property="count" column="count" />
+		<result property="nick_name" column="name" />
+	</resultMap>
+
+	<resultMap type="History" id="historyCompanyResultMap_All">
+		<id property="history_no" column="history_no" />
+		<result property="offline_yn" column="offline_yn" />
+		<result property="end_yn" column="end_yn" />
+		<result property="simple_history_end_yn" column="simple_history_end_yn" />	
+		<result property="select_history" column="select_history" />
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+		<result property="user_no" column="user_no" />
+		<result property="company_no" column="company_no" />
+		<result property="nick_name" column="nick_name" />
+		<result property="user_not_read" column="user_not_read" />
+		<result property="is_report_alarmed" column="is_report_alarmed" />
+		<result property="isdeleted_user" column="isdeleted_user" />
+		<result property="isdeleted_company" column="isdeleted_company" />
+		<collection property="msg" column="message_no" ofType="ChatMessage"
+			javaType="ChatMessage">
+			<id property="message_no" column="message_no" />
+		<result property="message" column="message" />
+		<result property="sender" column="sender" />
+		<result property="send_date" column="send_date" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="History" id="historyUserResultMap_All">
+	<id property="history_no" column="history_no" />
+		<result property="offline_yn" column="offline_yn" />
+		<result property="end_yn" column="end_yn" />
+		<result property="simple_history_end_yn" column="simple_history_end_yn" />	
+		<result property="select_history" column="select_history" />
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+		<result property="user_no" column="user_no" />
+		<result property="company_no" column="company_no" />
+		<result property="name" column="name" />
+		<result property="company_not_read" column="company_not_read" />
+		<result property="is_report_alarmed" column="is_report_alarmed" />
+		<result property="isdeleted_user" column="isdeleted_user" />
+		<result property="isdeleted_company" column="isdeleted_company" />
+		<collection property="msg" column="message_no" ofType="ChatMessage"
+			javaType="ChatMessage">
+			<id property="message_no" column="message_no" />
+		<result property="message" column="message" />
+		<result property="sender" column="sender" />
+		<result property="send_date" column="send_date" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="History" id="historyEndYn">
+		<id property="history_no" column="history_no" />
+		<result property="end_yn" column="end_yn" />
+		<result property="simple_history_end_yn" column="simple_history_end_yn" />	
+	</resultMap>
+
+
+
+	<sql id="historyColumns">
+		history_no,
+		offline_yn,
+		end_yn,
+		simple_history_end_yn,
+		select_history,
+		start_date,
+		end_date,
+		user_no,
+		company_no
+	</sql>
+
+
+
+
+	<insert id="insert" parameterType="History">
+		INSERT INTO
+		ft_history(
+			offline_yn,
+			end_yn,
+			simple_history_end_yn,
+			select_history,
+			start_date,
+			end_date,
+			user_no,
+			company_no,
+			company_reg,
+			user_reg_id,
+			user_not_read,
+			company_not_read,
+			is_report_alarmed,
+			isdeleted_user,
+			isdeleted_company
+
+		)
+		VALUES (
+			true,
+			false,
+			#{simple_history_end_yn},
+			#{select_history},
+			#{start_date},
+			null,
+			#{user_no},
+			#{company_no},
+			#{company_reg},
+			#{user_reg_id},
+			0,
+			0,
+			0,
+			0,
+			0
+		)
+		<selectKey resultType="long" order="AFTER" keyProperty="history_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="selectKey" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="selectCompanyRank" resultMap="historyRankCountMap">
+		SELECT
+		COUNT( * ) AS count, nick_name FROM ft_history natural join ft_company
+		GROUP BY company_no
+		ORDER BY count DESC
+		LIMIT 0 , 5
+	</select>
+
+	<select id="selectLiveCount" resultType="long">
+		SELECT COUNT( * )
+		FROM ft_history
+		WHERE end_yn = 0
+	</select>
+	
+	<select id="selectCount" resultType="long">
+		SELECT COUNT( * )
+		FROM ft_history
+	</select>
+
+	<update id="insertEnd" parameterType="History">
+		UPDATE
+			ft_history
+		SET
+			end_date = #{end_date}
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="updateUserReg" parameterType="History">
+		UPDATE
+			ft_history
+		SET
+			user_reg_id = #{user_reg_id}
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+
+	<update id="updateCompanyReg" parameterType="History">
+		UPDATE
+			ft_history
+		SET
+			company_reg = #{company_reg}
+		WHERE
+			history_no = #{history_no} AND end_yn = 0
+	</update>
+
+	<update id="updateIsdelete_user" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			isdeleted_user = 1
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="updateIsdelete_company" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			isdeleted_company = 1
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+			ft_history
+		WHERE
+			history_no = #{history_no}
+	</delete>
+
+	<update id="update" parameterType="History">
+		UPDATE
+			ft_history
+		SET
+			offline_yn = #{offline_yn},
+			end_yn = #{end_yn},
+			start_date = #{start_date},
+			end_date = #{end_date}
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<select id="select" resultMap="historyUserResultMap_All"
+		parameterType="long">
+		SELECT
+			*
+		FROM
+			ft_history
+		WHERE
+			history_no= #{history_no}
+	</select>
+
+	<select id="selectByNo" resultMap="historyResultMap"
+		parameterType="long">
+		SELECT
+			*
+		FROM
+			ft_history
+		INNER JOIN
+			ft_message
+		ON
+			ft_history.history_no = ft_message.history_no
+		WHERE
+			ft_history.history_no= #{history_no}
+	</select>
+
+
+	<select id="selectAllCompany" resultMap="historyCompanyResultMap_All"
+		parameterType="long">
+		SELECT 
+			*
+		FROM 
+			(SELECT  
+				history_no,
+				offline_yn,
+				end_yn,
+				simple_history_end_yn,	
+				select_history,
+				start_date,
+				end_date,
+				user_no,
+				company_no,
+				user_not_read,
+				is_report_alarmed,
+				isdeleted_user,
+				isdeleted_company,
+				nick_name,
+				message_no,
+				message,
+				sender,
+				send_date
+				FROM 
+					ft_history
+				natural join 
+					ft_message 
+				natural join 
+					ft_company 
+				WHERE 
+					user_no = #{user_no} AND isdeleted_user = 0
+				ORDER BY message_no Desc
+			) 
+		AS a 
+		GROUP BY history_no  
+		ORDER BY end_yn Asc,  send_date Desc
+	</select>
+
+	<select id="selectByhistoryEndYnGeneral" resultMap="historyEndYn" parameterType="long">
+	<![CDATA[
+		SELECT
+			history_no,
+			end_yn,
+			select_history
+		FROM
+			ft_history
+		WHERE
+			user_no = #{user_no} AND company_no = #{company_no} AND end_yn = 0 AND (select_history IN  (0,2,3,4))
+	]]>
+	</select>
+	
+	<select id="selectByhistoryEndYnSimple" resultMap="historyEndYn" parameterType="long">
+	<![CDATA[
+		SELECT
+			history_no,
+			end_yn,
+			select_history
+		FROM
+			ft_history
+		WHERE
+			user_no = #{user_no} AND company_no = #{company_no} AND end_yn = 0 AND select_history = 1
+	]]>
+	</select>
+
+	<select id="selectAllUser" resultMap="historyUserResultMap_All"
+		parameterType="long">
+		SELECT 
+			*
+		FROM 
+			(SELECT  
+				history_no,
+				offline_yn,
+				end_yn,
+				simple_history_end_yn,	
+				select_history,
+				start_date,
+				end_date,
+				user_no,
+				company_no,
+				company_not_read,
+				is_report_alarmed,
+				isdeleted_user,
+				isdeleted_company,
+				name,
+				message_no,
+				message,
+				sender,
+				send_date
+				FROM 
+					ft_history
+				natural join 
+					ft_message 
+				natural join 
+					ft_user 
+				WHERE 
+					company_no = #{company_no} AND isdeleted_company = 0 
+				ORDER BY message_no Desc
+			) 
+		AS a 
+		GROUP BY history_no  
+		ORDER BY end_yn Asc,  send_date Desc
+	</select>
+
+	<select id="selectOnlyHistoryByNo" resultMap="historyIdMap"
+		parameterType="long">
+		SELECT
+			*
+		FROM
+			ft_history
+		WHERE
+			history_no= #{history_no}
+	</select>
+
+	<select id="selectUnAlarmedReportCount" resultType="long"
+		parameterType="long">
+		SELECT
+			COUNT(*)
+		FROM
+			ft_history
+		WHERE
+			user_no = #{user_no} AND end_yn = 1 AND is_report_alarmed = 0
+	</select>
+
+	<select id="selectHistoryUserConsertCount" resultType="long"
+		parameterType="long">
+		SELECT
+			COUNT(*)
+		FROM
+			ft_history
+		WHERE
+			user_no=#{user_no} AND end_yn = 0
+	</select>
+
+	<select id="selectHistoryCompanyConsertCount" resultType="long"
+		parameterType="long">
+		SELECT
+			COUNT(*)
+		FROM
+			ft_history
+		WHERE
+			company_no=#{company_no} AND end_yn = 0
+	</select>
+
+	<update id="userCountUp" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			user_not_read = user_not_read+1
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="companyCountUp" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			company_not_read = company_not_read+1
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="countInitCompany" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			company_not_read = 0
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="countInitUser" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			user_not_read = 0
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="updateEndYn" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			end_yn = true,
+			end_date = NOW()
+		WHERE
+			history_no = #{history_no}
+	</update>
+	
+	<update id="updateSimpleEndyn" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			simple_history_end_yn = true
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+	<update id="updateIsAlarmed" parameterType="long">
+		UPDATE
+			ft_history
+		SET
+			is_report_alarmed = #{is_report_alarmed}
+		WHERE
+			history_no = #{history_no}
+	</update>
+
+
+</mapper>

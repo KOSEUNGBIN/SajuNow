@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+	updateCheck="false" monitoring="autodetect" dynamicConfig="true"
+	maxBytesLocalHeap="20M" maxBytesLocalDisk="100M">
+
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache maxElementsInMemory="50" eternal="false"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
+
+	<cache name="actionScore" eternal="false" overflowToDisk="false"
+		timeToIdleSeconds="300" timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LFU" transactionalMode="off" />
+
+	<cache name="cutlineHotPost" eternal="false" overflowToDisk="false"
+		timeToIdleSeconds="300" timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LFU" transactionalMode="off" />
+
+	<cache name="cutlineUserLevel" eternal="false" overflowToDisk="false"
+		timeToIdleSeconds="300" timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LFU" transactionalMode="off" />
+
+	<cache name="sampleCache" eternal="false" diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
+
+</ehcache>

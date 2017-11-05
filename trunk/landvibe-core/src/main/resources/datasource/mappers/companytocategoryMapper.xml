@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.companytocategory.CompanyToCategoryDao">
+	
+	<resultMap type="CompanyToCategory" id="companytocategoryResultMap">
+		<id property="idx" column="idx" />
+		<result property="company_no" column="company_no" />
+		<result property="category_code" column="category_code" />
+	</resultMap>
+	
+	<sql id="companytocategoryColumns">
+		idx,
+		company_no,
+		category_code
+	</sql>
+	
+	<insert id="insert" parameterType="CompanyToCategory">
+		INSERT INTO 
+			ft_company_category(
+				category_code,
+				company_no
+			)
+			VALUES (
+			   #{category_code},
+			   #{company_no}
+			)
+	</insert>
+	
+	<select id="select" resultMap="companytocategoryResultMap" parameterType="long">
+		SELECT
+			<include refid="companytocategoryColumns" />
+		FROM
+			ft_company_category
+		WHERE
+			company_no = #{company_no}
+	</select>
+	
+	<select id="selectAll" resultMap="companytocategoryResultMap" >
+		SELECT
+			<include refid="companytocategoryColumns" />
+		FROM
+			ft_company_category
+	</select>
+</mapper>

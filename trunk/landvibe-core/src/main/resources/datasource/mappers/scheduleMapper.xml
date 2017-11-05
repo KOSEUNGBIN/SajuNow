@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.schedule.ScheduleDao">
+
+	<resultMap type="Schedule" id="scheduleResultMap">
+		<result property="schedule_no" column="schedule_no" />
+		<result property="company_no" column="company_no" />
+		<result property="date" column="date" />
+		<result property="slot_09" column="slot_09" />
+		<result property="slot_10" column="slot_10" />
+		<result property="slot_11" column="slot_11" />
+		<result property="slot_12" column="slot_12" />
+		<result property="slot_13" column="slot_13" />
+		<result property="slot_14" column="slot_14" />
+		<result property="slot_15" column="slot_15" />
+		<result property="slot_16" column="slot_16" />
+		<result property="slot_17" column="slot_17" />
+		<result property="slot_18" column="slot_18" />
+		<result property="slot_19" column="slot_19" />
+		
+	</resultMap>
+
+	<resultMap type="Schedule" id="companySchduleMap">
+		<id property="schedule_no" column="schedule_no" />
+		<result property="company_no" column="company_no" />
+		<result property="chat_count" column="chat_count" />
+		<result property="slot_nowtime" column="slot_nowtime" />
+	</resultMap>
+
+	<sql id="scheduleColumns">
+		schedule_no,
+		company_no,
+		date,
+		slot_09,
+		slot_10,
+		slot_11,
+		slot_12,
+		slot_13,
+		slot_14,
+		slot_15,
+		slot_16,
+		slot_17,
+		slot_18,
+		slot_19
+		
+	</sql>
+
+
+	<insert id="insert" parameterType="Schedule">
+		INSERT INTO 
+			ft_schedule(
+				company_no,
+				date,
+				slot_09,
+		slot_10,
+		slot_11,
+		slot_12,
+		slot_13,
+		slot_14,
+		slot_15,
+		slot_16,
+		slot_17,
+		slot_18,
+		slot_19
+			)
+			VALUES (
+				#{company_no},
+				#{date},
+				#{slot_09},
+				#{slot_10},
+				#{slot_11},
+				#{slot_12},
+				#{slot_13},
+				#{slot_14},
+				#{slot_15},
+				#{slot_16},
+				#{slot_17},
+				#{slot_18},
+				#{slot_19}
+			)
+		
+	</insert>
+	
+	<select id="selectAll" resultMap="scheduleResultMap">
+		SELECT
+			*
+		FROM 
+			ft_schedule
+	</select>
+
+	<select id="selectByNo" resultMap="scheduleResultMap" parameterType="map" >
+		SELECT
+			*
+		FROM 
+			ft_schedule
+		WHERE 
+			company_no = #{company_no}
+			and
+			date = #{date}
+	</select>
+	
+	<select id="selectByNoForDuplicate" resultMap="scheduleResultMap" parameterType="map" >
+		SELECT
+			*
+		FROM 
+			ft_schedule
+		WHERE 
+			company_no = #{company_no}
+			and
+			date = #{date}
+	</select>
+	
+	
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM 
+			ft_schedule
+		WHERE 
+			schedule_no = #{schedule_no}
+	</delete>
+
+	<update id="update" parameterType="Schedule">
+		UPDATE 
+			ft_schedule
+		SET
+		slot_09 = #{slot_09},
+		slot_10 = #{slot_10},
+		slot_11 = #{slot_11},
+		slot_12 = #{slot_12},
+		slot_13 = #{slot_13},
+		slot_14 = #{slot_14},
+		slot_15 = #{slot_15},
+		slot_16 = #{slot_16},
+		slot_17 = #{slot_17},
+		slot_18 = #{slot_18},
+		slot_19 = #{slot_19}
+		WHERE
+			company_no = #{company_no} and date = #{date}
+	</update>
+
+	<insert id="insertScheduleAll">
+		INSERT INTO 
+			ft_schedule(
+				company_no,
+				date,
+				slot_09,
+				slot_10,
+				slot_11,
+				slot_12,
+				slot_13,
+				slot_14,
+				slot_15,
+				slot_16,
+				slot_17,
+				slot_18,
+				slot_19
+			)
+			VALUES
+		<foreach collection="companyList" item="item" separator=",">
+			(
+				#{item.company_no},
+				#{date},
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1
+			)
+		</foreach>	
+	</insert>
+
+	<insert id="insertScheduleNewCompany">
+		INSERT INTO 
+			ft_schedule(
+				company_no,
+				date,
+				slot_09,
+				slot_10,
+				slot_11,
+				slot_12,
+				slot_13,
+				slot_14,
+				slot_15,
+				slot_16,
+				slot_17,
+				slot_18,
+				slot_19
+			)
+			VALUES
+			(
+				#{company_no},
+				#{date},
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1,
+				1
+			)
+	</insert>
+
+</mapper>

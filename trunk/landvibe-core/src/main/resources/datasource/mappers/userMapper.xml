@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.landvibe.core.user.UserDao">
+
+	<resultMap type="User" id="userResultMap">
+		<id property="user_no" column="user_no" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="name" column="name" />
+		<result property="birthday" column="birthday" />
+		<result property="birthday_detail" column="birthday_detail" />
+		<result property="gender" column="gender" />
+		<result property="modify_date" column="modify_date" />
+		<result property="solarlunar" column="solarlunar" />
+		<result property="user_reg_id" column="user_reg_id" />
+		<result property="naver_id" column="naver_id" />
+		<result property="facebook_id" column="facebook_id" />
+
+		<collection property="favoriteList" column="user_no"
+			ofType="UserFavorite" javaType="ArrayList">
+			<result property="user_no" column="user_no" />
+			<result property="company_no" column="company_no" />
+		</collection>
+	</resultMap>
+
+	<sql id="userColumns">
+		user_no,
+		email,
+		password,
+		name,
+		birthday,
+		birthday_detail,
+		gender,
+		modify_date,
+		solarlunar
+
+	</sql>
+
+
+	<insert id="insert" parameterType="User">
+		INSERT INTO
+		ft_user(
+		email,
+		password,
+		name,
+		naver_id,
+		facebook_id,
+		modify_date
+		)
+		VALUES (
+		#{email},
+		#{password},
+		#{name},
+		#{naver_id},
+		#{facebook_id},
+		NOW()
+		)
+
+		<selectKey resultType="long" order="AFTER" keyProperty="user_no">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+
+	</insert>
+	
+	<select id="selectKey" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+
+
+	<select id="selectCount" resultType="long">
+		SELECT COUNT( * )
+		FROM `ft_user`
+	</select>
+
+	<select id="selectByNo" resultMap="userResultMap" parameterType="long">
+		SELECT
+		*
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</select>
+	
+	<select id="selectUserRegIdByNaverId"  resultMap="userResultMap" parameterType="String">
+		SELECT
+		user_reg_id, email, user_no
+		FROM
+		ft_user
+		WHERE
+		naver_id = #{naver_id}
+	</select>
+	
+	<select id="selectUserRegIdByFacebookId"  resultMap="userResultMap" parameterType="String">
+		SELECT
+		user_reg_id, email, user_no
+		FROM
+		ft_user
+		WHERE
+		facebook_id = #{facebook_id}
+	</select>
+
+
+	<select id="selectForLogin" resultMap="userResultMap"
+		parameterType="String">
+		SELECT
+		user_no, name, user_reg_id, naver_id
+		FROM
+		ft_user
+		WHERE
+		email = #{email} and password = #{password}
+	</select>
+
+	<select id="selectByToken" resultType="int"
+		parameterType="String">
+		SELECT
+		COUNT(*)
+		FROM
+		ft_user
+		WHERE
+		user_token = #{user_token}
+	</select>
+	
+	<select id="selectForBlock" resultType="String"
+		parameterType="int">
+		SELECT
+		user_reg_id
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</select>
+
+	<select id="selectByEmail" resultMap="userResultMap"
+		parameterType="String">
+		SELECT
+		*
+		FROM
+		ft_user
+		WHERE
+		email = #{email}
+	</select>
+
+	<select id="selectAll" resultMap="userResultMap">
+		SELECT
+			<include refid="userColumns" />
+		FROM
+			ft_user
+	</select>
+	
+	<select id="selectSection" resultMap="userResultMap" parameterType="long">
+		SELECT
+			<include refid="userColumns" />
+		FROM
+			ft_user
+		LIMIT 
+			#{selectNo},15
+	</select>
+
+	<select id="selectJoinFavorite" resultMap="userResultMap">
+		SELECT
+		ft_user.
+		<include refid="userColumns" />
+		,
+		ft_user_favorite.*
+		FROM
+		ft_user
+		INNER JOIN
+		ft_user_favorite
+		ON
+		ft_user.user_no = ft_user_favorite.user_no
+
+	</select>
+
+
+	<select id="selectByCompanyRegId" parameterType="String"
+		resultMap="userResultMap">
+		SELECT
+		user_no
+		FROM
+		ft_user
+		WHERE
+		user_reg_id = #{company_reg_id}
+
+	</select>
+
+	<delete id="delete" parameterType="long">
+		DELETE
+		FROM
+		ft_user
+		WHERE
+		user_no = #{user_no}
+	</delete>
+
+	<update id="update" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		birthday = #{birthday},
+		birthday_detail = #{birthday_detail},
+		gender = #{gender},
+		solarlunar = #{solarlunar},
+		modify_date = NOW()
+		WHERE
+		user_no = #{user_no}
+	</update>
+
+	<update id="updateToken" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		user_token = #{user_token}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updatePassword" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		password = #{password}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updateNaverId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		naver_id = #{naver_id}
+		WHERE
+		user_no = #{user_no}
+	</update>
+	
+	<update id="updateFacebookId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		facebook_id = #{facebook_id}
+		WHERE
+		user_no = #{user_no}
+	</update>
+
+	<update id="updateRegId" parameterType="User">
+		UPDATE
+		ft_user
+		SET
+		user_reg_id = #{user_reg_id}
+		WHERE
+		user_no = #{user_no}
+	</update>
+</mapper>

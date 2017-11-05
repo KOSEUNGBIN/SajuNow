@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<context:component-scan base-package="com.landvibe.api" />
+	<mvc:annotation-driven />
+
+
+     <!--   로그인 완료한 사용자에 대한 권한 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/**" />
+			<mvc:mapping path="/company/**" />
+			<mvc:mapping path="/chat/**" />
+			<mvc:mapping path="/history/**" />
+			<mvc:mapping path="/schedule/**" />
+			<mvc:mapping path="/friend/**" />
+			<mvc:exclude-mapping path="/user/login/**" />
+			<mvc:exclude-mapping path="/user/insert/**" />
+			<mvc:exclude-mapping path="/user/complex/**" />
+			<mvc:exclude-mapping path="/user/change/**" />
+			<mvc:exclude-mapping path="/user/update/regid" />
+			<mvc:exclude-mapping path="/company/login/**" />
+			<mvc:exclude-mapping path="/company/insert/**" />
+			<mvc:exclude-mapping path="/company/complex/**" />
+			<mvc:exclude-mapping path="/company/change/**" />
+			<mvc:exclude-mapping path="/company/update/regid" />
+			<mvc:exclude-mapping path="/company/outerjoin/user/**" />
+			<mvc:exclude-mapping path="/company/image/**" />
+			<mvc:exclude-mapping path="/company/join/report/**" />
+			<mvc:exclude-mapping path="/company/join/category/**" />
+
+
+			<bean class="com.landvibe.common.interceptor.UserAuthInterceptor" />
+
+		</mvc:interceptor>
+		
+		
+		 <!--   비 로그인시에 대한 권한 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/user/login/**" />
+			<mvc:mapping path="/user/insert/**" />
+			<mvc:mapping path="/user/complex/**" />
+			<mvc:mapping path="/user/change/**" />
+			<mvc:mapping path="/user/update/regid" />
+			<mvc:mapping path="/company/login/**" />
+			<mvc:mapping path="/company/insert/**" />
+			<mvc:mapping path="/company/complex/**" />
+			<mvc:mapping path="/company/change/**" />
+			<mvc:mapping path="/company/update/regid" />
+			<mvc:mapping path="/company/outerjoin/user/**" />
+			<mvc:mapping path="/company/join/report/**" />
+			<mvc:mapping path="/company/join/category/**" />
+			<mvc:exclude-mapping path="/company/image/**" />
+			
+			<bean class="com.landvibe.common.interceptor.AppAuthInterceptor" />
+		</mvc:interceptor>
+
+	</mvc:interceptors>
+</beans>
