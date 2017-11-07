@@ -25,3 +25,7 @@ hs_err_pid*
 # Created by .ignore support plugin (hsz.mobi)
 /RemoteSystemsTempFiles/
 /bin/
+
+landvibe-admin/.DS_Store
+
+landvibe-web/src/test/
